@@ -1,0 +1,14 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+test-application,au.com.member.model,Member,299,33,53,1,9,4,43,4,16,4
+test-application,au.com.member.model,MemberTransaction.MemberTransactionBuilder,62,0,0,0,1,0,7,0,7,0
+test-application,au.com.member.model,Member.MemberBuilder,42,44,0,0,0,1,2,7,2,7
+test-application,au.com.member.model,MemberTransaction,231,0,38,0,8,0,34,0,15,0
+test-application,au.com.member.repository,MemberTransactionDAO.MemberTransactionDAOBuilder,74,0,0,0,1,0,8,0,8,0
+test-application,au.com.member.repository,MemberTransactionDAO,277,0,46,0,10,0,40,0,17,0
+test-application,au.com.member.repository,MemberDAO.MemberDAOBuilder,42,44,0,0,0,1,2,7,2,7
+test-application,au.com.member.repository,MemberDAO,288,45,54,0,3,8,39,7,12,7
+test-application,au.com.member.api,MemberController,16,13,0,0,4,5,2,2,2,2
+test-application,au.com.member.api,ResourceNotFoundException,20,0,0,0,8,0,4,0,4,0
+test-application,au.com.member.service,MemberService,101,52,5,1,26,17,8,3,5,3
+test-application,au.com.member,ApplicationConfig,3,0,0,0,1,0,1,0,1,0
+test-application,au.com.member,Application,12,0,0,0,5,0,3,0,3,0

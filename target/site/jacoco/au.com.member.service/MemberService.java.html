@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemberService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">test-application</a> &gt; <a href="index.source.html" class="el_package">au.com.member.service</a> &gt; <span class="el_source">MemberService.java</span></div><h1>MemberService.java</h1><pre class="source lang-java linenums">package au.com.member.service;
+
+import au.com.member.api.ResourceNotFoundException;
+import au.com.member.model.Member;
+import au.com.member.model.MemberTransaction;
+import au.com.member.repository.MemberDAO;
+import au.com.member.repository.MemberRepository;
+import au.com.member.repository.MemberTransactionRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+<span class="fc" id="L16">@Slf4j</span>
+@Service
+public class MemberService {
+
+  private static final String FREQUENT_FLYER_PROGRAM = &quot;FF&quot;;
+
+  private MemberRepository memberRepository;
+
+  private MemberTransactionRepository memberTransactionRepository;
+
+
+  @Autowired
+  public MemberService(
+      final MemberRepository memberRepository,
+<span class="fc" id="L30">      final MemberTransactionRepository memberTransactionRepository) {</span>
+
+<span class="fc" id="L32">    this.memberRepository = memberRepository;</span>
+<span class="fc" id="L33">    this.memberTransactionRepository = memberTransactionRepository;</span>
+
+<span class="fc" id="L35">  }</span>
+
+  public List&lt;Member&gt; getAllMembers() {
+<span class="nc" id="L38">    List&lt;Member&gt; members = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L39">     memberRepository.findAll().forEach(foundMemberDAO-&gt;</span>
+<span class="nc" id="L40">         members.add(Member.builder()</span>
+<span class="nc" id="L41">             .memberId(foundMemberDAO.getMemberId())</span>
+<span class="nc" id="L42">             .firstName(foundMemberDAO.getFirstName())</span>
+<span class="nc" id="L43">             .lastName(foundMemberDAO.getLastName())</span>
+<span class="nc" id="L44">             .dateOfBirth(foundMemberDAO.getDateOfBirth())</span>
+<span class="nc" id="L45">             .dateOfJoining(foundMemberDAO.getDateOfJoining())</span>
+<span class="nc" id="L46">             .build()));</span>
+<span class="nc" id="L47">     return members;</span>
+  }
+  public Optional&lt;Member&gt; getMember(final Long memberId) {
+
+<span class="fc" id="L51">    log.info(&quot;Finding a member by id '{}'&quot;, memberId);</span>
+
+<span class="fc" id="L53">    final Optional&lt;MemberDAO&gt; optionalFoundMemberDAO = memberRepository.findById(memberId);</span>
+
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">    if (!optionalFoundMemberDAO.isPresent()) {</span>
+<span class="nc" id="L56">      return Optional.empty();</span>
+    }
+
+<span class="fc" id="L59">    log.info(&quot;Found a member by id '{}'&quot;, memberId);</span>
+
+<span class="fc" id="L61">    final MemberDAO foundMemberDAO = optionalFoundMemberDAO.get();</span>
+
+<span class="fc" id="L63">    return Optional.of(Member.builder()</span>
+<span class="fc" id="L64">        .memberId(foundMemberDAO.getMemberId())</span>
+<span class="fc" id="L65">        .firstName(foundMemberDAO.getFirstName())</span>
+<span class="fc" id="L66">        .lastName(foundMemberDAO.getLastName())</span>
+<span class="fc" id="L67">        .dateOfBirth(foundMemberDAO.getDateOfBirth())</span>
+<span class="fc" id="L68">        .dateOfJoining(foundMemberDAO.getDateOfJoining())</span>
+<span class="fc" id="L69">        .build());</span>
+  }
+
+  public List&lt;MemberTransaction&gt; getMemberTransaction(Long memberId) {
+
+<span class="nc" id="L74">    List&lt;MemberTransaction&gt; transactions = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L76">     memberTransactionRepository.findTransactionsByMemberId(memberId)</span>
+<span class="nc" id="L77">         .forEach(memberTransactionDAO -&gt;</span>
+<span class="nc" id="L78">        transactions.add(MemberTransaction.builder()</span>
+<span class="nc" id="L79">            .description(memberTransactionDAO.getDescription())</span>
+<span class="nc" id="L80">            .type(memberTransactionDAO.getType())</span>
+<span class="nc" id="L81">            .amount(memberTransactionDAO.getAmount())</span>
+<span class="nc" id="L82">            .build()));</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">    if(transactions.isEmpty()){</span>
+<span class="nc" id="L84">      throw new ResourceNotFoundException(&quot;No transactions exists for memberId=&quot; + memberId);</span>
+    }
+<span class="nc" id="L86">    return transactions;</span>
+
+  }
+
+  public Member checkMember(Long memberId) {
+<span class="nc" id="L91">    final Optional&lt;Member&gt; foundMember = getMember(memberId);</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">    if (!foundMember.isPresent()) {</span>
+<span class="nc" id="L94">      throw new ResourceNotFoundException(&quot;No member exists with memberId=&quot; + memberId);</span>
+    }
+
+<span class="nc" id="L97">    return foundMember.get();</span>
+
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

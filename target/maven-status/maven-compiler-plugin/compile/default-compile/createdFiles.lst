@@ -1,0 +1,15 @@
+au\com\member\model\MemberTransaction.class
+au\com\member\repository\MemberDAO$MemberDAOBuilder.class
+au\com\member\Application.class
+au\com\member\model\Member.class
+au\com\member\api\MemberController.class
+au\com\member\model\Member$MemberBuilder.class
+au\com\member\model\MemberTransaction$MemberTransactionBuilder.class
+au\com\member\ApplicationConfig.class
+au\com\member\repository\MemberTransactionRepository.class
+au\com\member\api\ResourceNotFoundException.class
+au\com\member\repository\MemberTransactionDAO.class
+au\com\member\repository\MemberRepository.class
+au\com\member\repository\MemberDAO.class
+au\com\member\repository\MemberTransactionDAO$MemberTransactionDAOBuilder.class
+au\com\member\service\MemberService.class
